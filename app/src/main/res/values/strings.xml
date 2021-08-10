@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">innovc</string>
+    <string name="menu_filter">Filter</string>
+    <string name="nav_all">Show all</string>
+    <string name="nav_name">Filter by name</string>
+    <string name="nav_birthday">Filter by birthday</string>
+    <string name="loading_user_error">loading user error</string>
+</resources>
