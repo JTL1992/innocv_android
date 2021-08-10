@@ -1,5 +1,7 @@
 package com.alisoltech.innovc.core
 
-interface BasePresenter {
-    fun start()
+interface BasePresenter<T> {
+
+    fun takeView(view: T)
+    fun dropView()
 }

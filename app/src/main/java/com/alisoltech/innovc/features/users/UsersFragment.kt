@@ -8,21 +8,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alisoltech.innovc.R
 import com.alisoltech.innovc.data.models.User
+import com.alisoltech.innovc.di.ActivityScope
+import com.alisoltech.innovc.di.FragmentScope
 import com.google.android.material.snackbar.Snackbar
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.activity_users.*
 import kotlinx.android.synthetic.main.fragment_users_list.view.*
+import javax.inject.Inject
 
 /**
  * A fragment representing a list of Items.
  */
-class UsersFragment : Fragment(), UserContract.View {
 
-    override lateinit var presenter: UserContract.Presenter
+@ActivityScope
+class UsersFragment @Inject constructor() : DaggerFragment(), UserContract.View {
+    @Inject
+    lateinit var presenter: UserContract.Presenter
 
     private val userAdapter = UserRecyclerViewAdapter(listOf())
-
-    override var isActive: Boolean = false
-        get() = isAdded
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +51,7 @@ class UsersFragment : Fragment(), UserContract.View {
     }
     override fun onResume() {
         super.onResume()
-        presenter.start()
+        presenter.takeView(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -107,10 +110,5 @@ class UsersFragment : Fragment(), UserContract.View {
             }
             show()
         }
-    }
-
-    companion object {
-
-        fun newInstance() = UsersFragment()
     }
 }

@@ -3,40 +3,44 @@ package com.alisoltech.innovc.features.users
 import com.alisoltech.innovc.data.models.User
 import com.alisoltech.innovc.data.source.UserDataSource
 import com.alisoltech.innovc.data.source.UserRepository
+import com.alisoltech.innovc.di.ActivityScope
+import javax.inject.Inject
 
-class UserPresenter(val userRepository: UserRepository, val view: UserContract.View): UserContract.Presenter {
+@ActivityScope
+class UserPresenter @Inject constructor(): UserContract.Presenter {
+    @Inject
+    lateinit var userRepository: UserRepository
 
-    init {
-        view.presenter = this
-    }
+    var view: UserContract.View? = null
 
     override fun loadUsers() {
-        view.setLoadingIndicator(true)
+        view?.setLoadingIndicator(true)
         userRepository.loadUsers(object :UserDataSource.LoadUsersCallback{
             override fun onUsersLoaded(users: List<User>) {
-                if (!view.isActive) {
-                    return
+                view?.let {
+                    it.showUsers(users)
+                    it.setLoadingIndicator(false)
                 }
-                view.showUsers(users)
-                view.setLoadingIndicator(false)
             }
 
             override fun onDataNotAvailable() {
-                if (!view.isActive) {
-                    return
-                }
-                view.showLoadingUserError()
-                view.setLoadingIndicator(false)
+                view?.showLoadingUserError()
+                view?.setLoadingIndicator(false)
             }
 
         })
     }
 
     override fun addNewUser() {
-        view.showAddUser()
+        view?.showAddUser()
     }
 
-    override fun start() {
+    override fun takeView(view: UserContract.View) {
+        this.view = view
         loadUsers()
+    }
+
+    override fun dropView() {
+        this.view = null
     }
 }

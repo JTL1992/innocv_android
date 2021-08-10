@@ -8,8 +8,6 @@ interface UserContract {
 
     interface View: BaseView<Presenter> {
 
-        var isActive: Boolean
-
         fun setLoadingIndicator(active: Boolean)
 
         fun showUsers(users: List<User>)
@@ -23,7 +21,7 @@ interface UserContract {
         fun showFilterMenu()
     }
 
-    interface Presenter: BasePresenter {
+    interface Presenter: BasePresenter<View> {
 
         fun loadUsers()
 

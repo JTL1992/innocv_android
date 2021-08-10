@@ -12,8 +12,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.nio.charset.Charset
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ApiClientManager {
+@Singleton
+class ApiClientManager @Inject constructor() {
     private val TAG = "ApiClientManager"
     private var mRetrofit: Retrofit? = null
     private val httpBuilder = OkHttpClient.Builder()

@@ -5,12 +5,22 @@ import androidx.appcompat.app.AppCompatActivity
 import com.alisoltech.innovc.R
 import com.alisoltech.innovc.data.source.UserRepository
 import com.alisoltech.innovc.data.source.remote.RemoteUserDataSource
+import com.alisoltech.innovc.di.ActivityScope
 import com.alisoltech.innovc.utils.replaceFragmentInActivity
 import com.alisoltech.innovc.utils.setupActionBar
+import dagger.Lazy
+import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
-class UsersActivity : AppCompatActivity() {
+@ActivityScope
+class UsersActivity : DaggerAppCompatActivity() {
 
-    private lateinit var userPresenter: UserPresenter
+    @Inject
+    lateinit var userPresenter: UserPresenter
+
+    @Inject
+    lateinit var usersFragmentProvider: Lazy<UsersFragment>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_users)
@@ -19,10 +29,9 @@ class UsersActivity : AppCompatActivity() {
             setDisplayShowHomeEnabled(true)
         }
         val usersFragment = supportFragmentManager.findFragmentById(R.id.contentFrame)
-                as UsersFragment? ?: UsersFragment.newInstance().also {
+                as UsersFragment? ?: usersFragmentProvider.get().also {
             replaceFragmentInActivity(it, R.id.contentFrame)
         }
 
-        userPresenter = UserPresenter(UserRepository(RemoteUserDataSource()), usersFragment)
     }
 }

@@ -33,5 +33,5 @@ interface UserDataSource {
 
     fun deleteUser(userId: Int, callback: LoadDataCallback)
 
-    fun editUser(userId: Int, callback: LoadDataCallback)
+    fun editUser(user: User, callback: LoadDataCallback)
 }
