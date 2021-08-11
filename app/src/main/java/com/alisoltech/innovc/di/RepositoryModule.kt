@@ -11,8 +11,4 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun remoteUserSource(source: RemoteUserDataSource): UserDataSource
-
-//    @Binds
-//    abstract fun userRepository(userRepository: UserRepository): UserRepository
-
 }
